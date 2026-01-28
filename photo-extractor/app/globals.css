@@ -188,5 +188,6 @@ a {
   }
 }
 
-
-
+.not-found-link:hover {
+  background: #1E5050 !important;
+}

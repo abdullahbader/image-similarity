@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import './globals.css'
 
 export default function NotFound() {
   return (
@@ -39,6 +40,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
+        className="not-found-link"
         style={{
           padding: '12px 24px',
           fontSize: '1rem',
@@ -51,12 +53,6 @@ export default function NotFound() {
           textDecoration: 'none',
           display: 'inline-block',
           transition: 'background 0.2s'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#1E5050'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = '#008571'
         }}
       >
         Go back home
