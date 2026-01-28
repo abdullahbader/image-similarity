@@ -156,26 +156,24 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
     return Array.from(folders).sort()
   }, [data])
 
-  const calculateTooltipPosition = (element: HTMLElement, tooltipWidth: number = 300, tooltipHeight: number = 300) => {
-    const rect = element.getBoundingClientRect()
-    const offset = 15 // Distance from element
+  const updateTooltipPosition = (clientX: number, clientY: number, tooltipWidth: number = 300, tooltipHeight: number = 300) => {
+    const offset = 15
     
-    // For position: fixed, use viewport coordinates (no scroll offset)
-    // Position to the right of the element by default, aligned with top
-    let x = rect.right + offset
-    let y = rect.top
+    // Position tooltip at mouse cursor location
+    let x = clientX + offset
+    let y = clientY + offset
     
-    // Adjust if tooltip would go off right edge
+    // Adjust if tooltip would go off screen to the right
     if (x + tooltipWidth > window.innerWidth - 20) {
-      x = rect.left - tooltipWidth - offset // Show on left side
+      x = clientX - tooltipWidth - offset
     }
     
-    // Adjust if tooltip would go off bottom edge
+    // Adjust if tooltip would go off screen to the bottom
     if (y + tooltipHeight > window.innerHeight - 20) {
-      y = rect.bottom - tooltipHeight // Show above
+      y = clientY - tooltipHeight - offset
     }
     
-    // Ensure tooltip doesn't go off left or top edges
+    // Ensure tooltip stays within viewport bounds
     x = Math.max(20, Math.min(x, window.innerWidth - tooltipWidth - 20))
     y = Math.max(20, Math.min(y, window.innerHeight - tooltipHeight - 20))
     
@@ -189,43 +187,11 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
       const cellElement = e.currentTarget as HTMLElement
       setHoveredCellRef(cellElement)
       
-      // Try to get cell bounds
-      const rect = cellElement.getBoundingClientRect()
-      const tooltipWidth = 300
-      const tooltipHeight = 300
-      const offset = 15
-      const mouseX = e.clientX
-      const mouseY = e.clientY
-      
-      let x: number
-      let y: number
-      
-      // Check if cell rect is valid (visible and has size)
-      if (rect.width > 0 && rect.height > 0 && rect.right > 0 && rect.left < window.innerWidth) {
-        // Position relative to cell - to the right, aligned with top
-        x = rect.right + offset
-        y = rect.top
-        
-        // If right side doesn't fit, try left side
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = rect.left - tooltipWidth - offset
-        }
-      } else {
-        // Fallback: use mouse coordinates
-        x = mouseX + offset
-        y = mouseY - tooltipHeight / 2
-        
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = mouseX - tooltipWidth - offset
-        }
-      }
-      
-      // Ensure tooltip stays within viewport bounds
-      x = Math.max(20, Math.min(x, window.innerWidth - tooltipWidth - 20))
-      y = Math.max(20, Math.min(y, window.innerHeight - tooltipHeight - 20))
+      // Position tooltip at mouse cursor location
+      const position = updateTooltipPosition(e.clientX, e.clientY)
       
       setHoveredImage(image.thumbnail)
-      setHoverPosition({ x, y })
+      setHoverPosition(position)
       // Clear related images when showing single image
       setHoveredRelatedImages([])
     }
@@ -233,42 +199,11 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
 
   const handleMouseMove = (e: React.MouseEvent) => {
     // Only update position if we have a tooltip to show
-    if ((hoveredImage || hoveredRelatedImages.length > 0) && hoveredCellRef) {
-      const rect = hoveredCellRef.getBoundingClientRect()
+    if (hoveredImage || hoveredRelatedImages.length > 0) {
       const tooltipWidth = hoveredRelatedImages.length > 0 ? 400 : 300
       const tooltipHeight = hoveredRelatedImages.length > 0 ? 400 : 300
-      const offset = 15
-      const mouseX = e.clientX
-      const mouseY = e.clientY
-      
-      let x: number
-      let y: number
-      
-      // Check if cell rect is valid
-      if (rect.width > 0 && rect.height > 0 && rect.right > 0 && rect.left < window.innerWidth) {
-        // Position relative to cell - to the right, aligned with top
-        x = rect.right + offset
-        y = rect.top
-        
-        // If right side doesn't fit, try left side
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = rect.left - tooltipWidth - offset
-        }
-      } else {
-        // Fallback: use mouse coordinates
-        x = mouseX + offset
-        y = mouseY - tooltipHeight / 2
-        
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = mouseX - tooltipWidth - offset
-        }
-      }
-      
-      // Ensure tooltip stays within viewport bounds
-      x = Math.max(20, Math.min(x, window.innerWidth - tooltipWidth - 20))
-      y = Math.max(20, Math.min(y, window.innerHeight - tooltipHeight - 20))
-      
-      setHoverPosition({ x, y })
+      const position = updateTooltipPosition(e.clientX, e.clientY, tooltipWidth, tooltipHeight)
+      setHoverPosition(position)
     }
   }
 
@@ -293,43 +228,11 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
       const cellElement = e.currentTarget as HTMLElement
       setHoveredCellRef(cellElement)
       
-      // Try to get cell bounds
-      const rect = cellElement.getBoundingClientRect()
-      const tooltipWidth = 400
-      const tooltipHeight = 400
-      const offset = 15
-      const mouseX = e.clientX
-      const mouseY = e.clientY
-      
-      let x: number
-      let y: number
-      
-      // Check if cell rect is valid
-      if (rect.width > 0 && rect.height > 0 && rect.right > 0 && rect.left < window.innerWidth) {
-        // Position relative to cell - to the right, aligned with top
-        x = rect.right + offset
-        y = rect.top
-        
-        // If right side doesn't fit, try left side
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = rect.left - tooltipWidth - offset
-        }
-      } else {
-        // Fallback: use mouse coordinates
-        x = mouseX + offset
-        y = mouseY - tooltipHeight / 2
-        
-        if (x + tooltipWidth > window.innerWidth - 20) {
-          x = mouseX - tooltipWidth - offset
-        }
-      }
-      
-      // Ensure tooltip stays within viewport bounds
-      x = Math.max(20, Math.min(x, window.innerWidth - tooltipWidth - 20))
-      y = Math.max(20, Math.min(y, window.innerHeight - tooltipHeight - 20))
+      // Position tooltip at mouse cursor location
+      const position = updateTooltipPosition(e.clientX, e.clientY, 400, 400)
       
       setHoveredRelatedImages(relatedImages)
-      setHoverPosition({ x, y })
+      setHoverPosition(position)
     }
   }
 
@@ -403,10 +306,10 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
   }
 
   const inputStyle = {
-    padding: '10px 16px',
+    padding: 'clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px)',
     borderRadius: '12px',
     border: '1px solid rgba(0, 133, 113, 0.2)',
-    fontSize: '0.9rem',
+    fontSize: 'clamp(0.85rem, 2vw, 0.9rem)',
     background: 'rgba(255, 255, 255, 0.8)',
     transition: 'all 0.2s ease',
     outline: 'none',
@@ -414,11 +317,11 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
   }
 
   const buttonStyle = {
-    padding: '10px 16px',
+    padding: 'clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px)',
     borderRadius: '12px',
     border: 'none',
     cursor: 'pointer' as const,
-    fontSize: '0.9rem',
+    fontSize: 'clamp(0.85rem, 2vw, 0.9rem)',
     fontWeight: '600' as const,
     transition: 'all 0.2s ease'
   }
@@ -434,7 +337,7 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
         gap: '16px'
       }}>
         <h2 style={{ 
-          fontSize: '1.75rem', 
+          fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', 
           fontWeight: '700',
           background: 'linear-gradient(135deg, #008571 0%, #1E5050 100%)',
           WebkitBackgroundClip: 'text',
@@ -444,7 +347,7 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
           📋 Image Metadata Table
         </h2>
         
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', width: '100%' }}>
           <input
             type="text"
             placeholder="🔍 Search..."
@@ -452,7 +355,8 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
             onChange={(e) => setFilters({ ...filters, searchQuery: e.target.value, currentPage: 0 })}
             style={{
               ...inputStyle,
-              minWidth: '200px'
+              minWidth: 'min(200px, 100%)',
+              flex: '1 1 auto'
             }}
             onFocus={(e) => {
               e.currentTarget.style.borderColor = 'rgba(0, 133, 113, 0.5)'
@@ -710,7 +614,7 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
               background: 'linear-gradient(135deg, rgba(0, 133, 113, 0.1) 0%, rgba(30, 80, 80, 0.1) 100%)',
               borderBottom: '2px solid rgba(0, 133, 113, 0.2)'
             }}>
-              <th style={{ padding: '12px', width: '40px' }}>
+              <th style={{ padding: 'clamp(8px, 2vw, 12px)', width: '40px' }}>
                 <input
                   type="checkbox"
                   checked={allSelected}
@@ -725,7 +629,7 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
                 <th
                   key={col}
                   style={{
-                    padding: '16px 12px',
+                    padding: 'clamp(10px, 2vw, 16px) clamp(8px, 2vw, 12px)',
                     textAlign: 'left',
                     fontWeight: '700',
                     fontSize: '0.875rem',
@@ -784,7 +688,7 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
                     }
                   }}
                 >
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: 'clamp(8px, 2vw, 12px)' }}>
                     <input
                       type="checkbox"
                       checked={isSelected}
@@ -827,8 +731,8 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
                       key={col}
                       data-col={col}
                       style={{
-                        padding: '12px',
-                        fontSize: '0.875rem',
+                        padding: 'clamp(8px, 2vw, 12px)',
+                        fontSize: 'clamp(0.8rem, 2vw, 0.875rem)',
                         color: '#4D4D4D',
                         ...(col === 'filename' && {
                           cursor: item.thumbnail ? 'pointer' : 'default',

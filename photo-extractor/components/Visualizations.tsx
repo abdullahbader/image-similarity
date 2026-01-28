@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { ImageMetadata } from '@/types'
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 // Dynamically import map component to avoid SSR issues
 const MapComponent = dynamic(() => import('./MapComponent'), { 
@@ -47,18 +47,6 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
       .sort((a, b) => a.date.localeCompare(b.date))
   }, [displayData])
 
-  // Prepare camera distribution data
-  const cameraData = useMemo(() => {
-    const cameraMap = new Map<string, number>()
-    displayData.forEach(img => {
-      const camera = img.device_id || 'Unknown'
-      cameraMap.set(camera, (cameraMap.get(camera) || 0) + 1)
-    })
-    return Array.from(cameraMap.entries())
-      .map(([camera, count]) => ({ camera, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10) // Top 10 cameras
-  }, [displayData])
 
   // Re-render map when data changes
   useEffect(() => {
@@ -76,7 +64,7 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
         gap: '16px' 
       }}>
         <h2 style={{ 
-          fontSize: '1.75rem', 
+          fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', 
           fontWeight: '700',
           background: 'linear-gradient(135deg, #008571 0%, #1E5050 100%)',
           WebkitBackgroundClip: 'text',
@@ -91,7 +79,7 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
             alignItems: 'center', 
             gap: '10px', 
             cursor: 'pointer',
-            padding: '10px 16px',
+            padding: 'clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px)',
             background: '#EFFFE5',
             borderRadius: '12px',
             border: '1px solid rgba(0, 133, 113, 0.2)',
@@ -123,7 +111,7 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
           {imagesWithGPS.length > 0 ? (
             <div style={{ marginBottom: '32px' }}>
               <h3 style={{ 
-                fontSize: '1.4rem', 
+                fontSize: 'clamp(1.1rem, 3vw, 1.4rem)', 
                 fontWeight: '700', 
                 marginBottom: '16px',
                 color: '#374151'
@@ -131,7 +119,7 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
                 🗺️ Photo Locations Map ({imagesWithGPS.length} {showOnlySelected ? 'selected' : ''} photos with GPS)
               </h3>
               <div style={{ 
-                height: '500px', 
+                height: 'clamp(300px, 50vh, 500px)', 
                 borderRadius: '16px', 
                 overflow: 'hidden',
                 border: '1px solid rgba(0, 133, 113, 0.2)',
@@ -145,14 +133,14 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
           ) : (
             <div style={{ 
               marginBottom: '32px', 
-              padding: '32px', 
+              padding: 'clamp(20px, 4vw, 32px)', 
               background: '#EFFFE5', 
               borderRadius: '16px',
               textAlign: 'center',
               color: '#4D4D4D',
               border: '1px solid rgba(0, 133, 113, 0.1)'
             }}>
-              <p style={{ fontSize: '1rem', fontWeight: '500' }}>No photos with GPS data to display on map</p>
+              <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1rem)', fontWeight: '500' }}>No photos with GPS data to display on map</p>
             </div>
           )}
         </>
@@ -191,38 +179,6 @@ export default function Visualizations({ data, selectedImages = new Set(), allDa
         </div>
       )}
 
-      {/* Camera Distribution Chart */}
-      {cameraData.length > 0 && (
-        <div style={{ 
-          marginBottom: '32px', 
-          padding: '24px', 
-          background: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '16px', 
-          border: '1px solid rgba(0, 133, 113, 0.1)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
-        }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '20px', color: '#374151' }}>
-            📷 Camera Distribution (Top 10)
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={cameraData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="camera" 
-                angle={-45}
-                textAnchor="end"
-                height={100}
-                interval={0}
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#008571" name="Photos" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
     </div>
   )
 }

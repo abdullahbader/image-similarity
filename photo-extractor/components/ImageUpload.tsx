@@ -142,6 +142,8 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
     const files = e.target.files
     if (files && files.length > 0) {
       await processFiles(files)
+      // Reset input to allow selecting the same folder again
+      e.target.value = ''
     }
   }
 
@@ -157,18 +159,38 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
     e.preventDefault()
   }
 
+  const handleFolderClick = () => {
+    console.log('handleFolderClick called, ref:', folderInputRef.current)
+    if (folderInputRef.current) {
+      console.log('Clicking folder input')
+      folderInputRef.current.click()
+    } else {
+      console.error('Folder input ref is not set')
+    }
+  }
+  
+  const handleFileClick = () => {
+    console.log('handleFileClick called, ref:', fileInputRef.current)
+    if (fileInputRef.current) {
+      console.log('Clicking file input')
+      fileInputRef.current.click()
+    } else {
+      console.error('File input ref is not set')
+    }
+  }
+
   return (
     <div style={{
       background: 'linear-gradient(135deg, rgba(0, 133, 113, 0.03) 0%, rgba(30, 80, 80, 0.03) 100%)',
       borderRadius: '20px',
-      padding: '32px',
+      padding: 'clamp(16px, 4vw, 32px)',
       marginBottom: '32px',
       border: '1px solid rgba(0, 133, 113, 0.1)',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
     }}>
       <h2 style={{ 
         marginBottom: '24px', 
-        fontSize: '1.75rem', 
+        fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', 
         fontWeight: '700',
         background: 'linear-gradient(135deg, #008571 0%, #1E5050 100%)',
         WebkitBackgroundClip: 'text',
@@ -194,7 +216,7 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
               key={method}
               onClick={() => setUploadMethod(method)}
               style={{
-                padding: '12px 24px',
+                padding: 'clamp(10px, 2vw, 12px) clamp(16px, 4vw, 24px)',
                 borderRadius: '12px',
                 border: 'none',
                 background: uploadMethod === method 
@@ -203,12 +225,14 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
                 color: uploadMethod === method ? 'white' : '#4D4D4D',
                 cursor: 'pointer',
                 fontWeight: '600',
-                fontSize: '0.9rem',
+                fontSize: 'clamp(0.8rem, 2vw, 0.9rem)',
                 transition: 'all 0.2s ease',
                 boxShadow: uploadMethod === method 
                   ? '0 4px 12px rgba(0, 133, 113, 0.4)'
                   : '0 2px 8px rgba(0, 0, 0, 0.05)',
-                transform: uploadMethod === method ? 'translateY(-2px)' : 'none'
+                transform: uploadMethod === method ? 'translateY(-2px)' : 'none',
+                flex: '1 1 auto',
+                minWidth: 'fit-content'
               }}
               onMouseEnter={(e) => {
                 if (uploadMethod !== method) {
@@ -229,39 +253,54 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
         </div>
       </div>
 
+      {/* Animated Border Upload Area */}
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          if (uploadMethod === 'folder') {
+            handleFolderClick()
+          } else {
+            handleFileClick()
+          }
+        }}
         style={{
-          border: '2px dashed rgba(0, 133, 113, 0.3)',
+          position: 'relative',
           borderRadius: '16px',
-          padding: '48px',
-          textAlign: 'center',
-          background: '#EFFFE5',
-          backdropFilter: 'blur(10px)',
+          padding: '3px',
+          background: 'linear-gradient(135deg, #008571, #1E5050, #008571)',
+          backgroundSize: '200% 200%',
+          animation: 'borderRotate 3s linear infinite',
           cursor: 'pointer',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          zIndex: 1
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(0, 133, 113, 0.5)'
-          e.currentTarget.style.background = '#FFFFFF'
           e.currentTarget.style.transform = 'translateY(-4px)'
-          e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 133, 113, 0.15)'
+          e.currentTarget.style.boxShadow = '0 12px 32px rgba(0, 133, 113, 0.3)'
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(0, 133, 113, 0.3)'
-          e.currentTarget.style.background = '#EFFFE5'
           e.currentTarget.style.transform = 'none'
           e.currentTarget.style.boxShadow = 'none'
         }}
-        onClick={() => {
-          if (uploadMethod === 'folder') {
-            folderInputRef.current?.click()
-          } else {
-            fileInputRef.current?.click()
-          }
-        }}
       >
+        {/* Inner content area */}
+        <div 
+          style={{
+            borderRadius: '13px',
+            padding: 'clamp(24px, 6vw, 48px)',
+            textAlign: 'center',
+            background: '#EFFFE5',
+            backdropFilter: 'blur(10px)',
+            transition: 'background 0.3s ease',
+            width: '100%',
+            height: '100%',
+            cursor: 'pointer',
+            pointerEvents: 'none'
+          }}
+        >
         {loading ? (
           <div style={{ width: '100%' }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px', animation: 'spin 1s linear infinite' }}>⏳</div>
@@ -322,19 +361,54 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
           </div>
         ) : (
           <>
-            <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📷</div>
+            {/* Animated Icons */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 'clamp(16px, 3vw, 24px)',
+              marginBottom: 'clamp(20px, 4vw, 28px)',
+              flexWrap: 'wrap'
+            }}>
+              {['📷', '📤', '✨', '🔍'].map((icon, index) => (
+                <div
+                  key={index}
+                  style={{
+                    fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+                    animation: `float ${2.5 + index * 0.5}s ease-in-out infinite`,
+                    animationDelay: `${index * 0.3}s`,
+                    filter: 'drop-shadow(0 4px 8px rgba(0, 133, 113, 0.2))',
+                    transition: 'transform 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.2) rotate(5deg)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1) rotate(0deg)'
+                  }}
+                >
+                  {icon}
+                </div>
+              ))}
+            </div>
             <>
-              <p style={{ fontSize: '1.2rem', marginBottom: '12px', fontWeight: '600', color: '#374151' }}>
+              <p style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)', marginBottom: 'clamp(12px, 2vw, 16px)', fontWeight: '600', color: '#374151' }}>
                 {uploadMethod === 'single' && 'Click or drag to upload a single image'}
                 {uploadMethod === 'multiple' && 'Click or drag to upload multiple images'}
-                {uploadMethod === 'folder' && 'Click to select a folder'}
+                {uploadMethod === 'folder' && 'Click to select a folder (includes all nested subfolders)'}
               </p>
-              <p style={{ color: '#4D4D4D', fontSize: '0.95rem', fontWeight: '400' }}>
+              <p style={{ color: '#4D4D4D', fontSize: 'clamp(0.9rem, 2vw, 1rem)', fontWeight: '400', marginBottom: 'clamp(8px, 1.5vw, 12px)' }}>
                 Supports: JPG, PNG, TIFF, BMP, HEIC
               </p>
+              {uploadMethod === 'folder' && (
+                <p style={{ color: '#008571', fontSize: 'clamp(0.85rem, 1.8vw, 0.95rem)', fontWeight: '500', fontStyle: 'italic' }}>
+                  💡 Tip: You can upload multiple folders - select a folder, then select another folder to add more images
+                </p>
+              )}
             </>
           </>
         )}
+        </div>
       </div>
 
       <input
@@ -344,6 +418,7 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
         multiple={uploadMethod === 'multiple'}
         onChange={handleFileChange}
         style={{ display: 'none' }}
+        id="file-input"
       />
       <input
         ref={folderInputRef}
@@ -353,6 +428,7 @@ export default function ImageUpload({ onImagesProcessed, loading, setLoading }: 
         multiple
         onChange={handleFileChange}
         style={{ display: 'none' }}
+        id="folder-input"
       />
     </div>
   )

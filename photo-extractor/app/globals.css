@@ -22,6 +22,50 @@ body {
   position: relative;
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  /* Ensure main container doesn't overflow on mobile */
+  main {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Better spacing on mobile */
+  section, div[style*="marginBottom"] {
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 5px;
+  }
+  
+  /* Even tighter spacing on small phones */
+  main {
+    padding: 8px !important;
+    border-radius: 12px !important;
+  }
+  
+  /* Reduce font sizes further on small screens */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Stack grid items on very small screens */
+  [style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -96,10 +140,51 @@ a {
 
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%);
+    background-position: -200% 0;
   }
   100% {
-    transform: translateX(100%);
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes borderRotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
