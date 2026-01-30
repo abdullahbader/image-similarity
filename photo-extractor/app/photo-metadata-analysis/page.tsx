@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Photo Metadata Analysis — Extract Metadata from Images | PhotoAnalyzer',
+  title: 'Photo Metadata Analysis - Extract Metadata from Images | PhotoAnalyzer',
   description: 'Extract comprehensive metadata from images including timestamps, GPS coordinates, camera information, and EXIF data. Analyze photo metadata to verify authenticity, track locations, and understand image origins.',
   keywords: 'photo metadata analysis, extract metadata from images, EXIF data extraction, image metadata analyzer, photo metadata extractor, GPS location extraction, camera information extraction, image timestamp extraction',
   openGraph: {
-    title: 'Photo Metadata Analysis — Extract Metadata from Images',
+    title: 'Photo Metadata Analysis - Extract Metadata from Images',
     description: 'Extract comprehensive metadata from images including timestamps, GPS coordinates, and camera information.',
     type: 'website',
     url: 'https://photoanalyser.com/photo-metadata-analysis',
@@ -335,7 +335,7 @@ export default function PhotoMetadataAnalysisPage() {
           color: '#4D4D4D',
           marginBottom: '24px'
         }}>
-          Extract comprehensive metadata from your images — it's free and works entirely in your browser.
+          Extract comprehensive metadata from your images &mdash; it&apos;s free and works entirely in your browser.
         </p>
         <Link href="/" style={{
           display: 'inline-block',

@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Image Fraud Detection — Detect Fraudulent Photo Submissions | PhotoAnalyzer',
+  title: 'Image Fraud Detection - Detect Fraudulent Photo Submissions | PhotoAnalyzer',
   description: 'Detect fraudulent photo submissions and prevent image fraud with our advanced image fraud detection tool. Check if images were submitted twice, identify reused photos, and verify image authenticity for insurance claims, marketplaces, and legal cases.',
   keywords: 'image fraud detection, detect fraudulent photo submissions, check uploaded photo fraud, prevent image fraud, photo fraud detection tool, detect duplicate image submissions in insurance, image authenticity verification',
   openGraph: {
-    title: 'Image Fraud Detection — Detect Fraudulent Photo Submissions',
+    title: 'Image Fraud Detection - Detect Fraudulent Photo Submissions',
     description: 'Detect fraudulent photo submissions and prevent image fraud with our advanced detection tool.',
     type: 'website',
     url: 'https://photoanalyser.com/image-fraud-detection',
@@ -206,7 +206,7 @@ export default function ImageFraudDetectionPage() {
             </h3>
             <p style={{ fontSize: '0.95rem', color: '#4D4D4D', lineHeight: '1.7' }}>
               Prevent sellers from using duplicate product images or stolen photos. Verify product authenticity 
-              and ensure sellers aren't reusing images from other listings or competitors.
+              and ensure sellers aren&apos;t reusing images from other listings or competitors.
             </p>
           </div>
 

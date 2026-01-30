@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+import Image from 'next/image'
 import { ImageMetadata, FilterState } from '@/types'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -868,9 +869,12 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
             willChange: 'auto'
           }}
         >
-          <img
-            src={hoveredImage}
+          <Image
+            src={hoveredImage || ''}
             alt="Preview"
+            width={280}
+            height={280}
+            unoptimized
             style={{
               maxWidth: '280px',
               maxHeight: '280px',
@@ -918,9 +922,12 @@ export default function DataTable({ data, onFilteredDataChange, selectedImages, 
             {hoveredRelatedImages.map((relatedImg, idx) => (
               <div key={idx} style={{ textAlign: 'center' }}>
                 {relatedImg.thumbnail && (
-                  <img
+                  <Image
                     src={relatedImg.thumbnail}
                     alt={relatedImg.filename}
+                    width={150}
+                    height={150}
+                    unoptimized
                     style={{
                       maxWidth: '150px',
                       maxHeight: '150px',

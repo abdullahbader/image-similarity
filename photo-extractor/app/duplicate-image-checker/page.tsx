@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Duplicate Image Checker Tool — Find Similar Images or Duplicates | PhotoAnalyzer',
+  title: 'Duplicate Image Checker Tool - Find Similar Images or Duplicates | PhotoAnalyzer',
   description: 'Free duplicate image checker tool to find similar images or duplicates in your photo collection. Upload images to detect duplicates, prevent repeated photo uploads, and identify similar photos instantly.',
   keywords: 'duplicate image checker, find similar images, detect duplicate images, find duplicate photos, similar image detection, duplicate photo finder, image comparison tool',
   openGraph: {
-    title: 'Duplicate Image Checker Tool — Find Similar Images',
+    title: 'Duplicate Image Checker Tool - Find Similar Images',
     description: 'Free duplicate image checker tool to find similar images or duplicates in your photo collection.',
     type: 'website',
     url: 'https://photoanalyser.com/duplicate-image-checker',
@@ -215,7 +215,7 @@ export default function DuplicateImageCheckerPage() {
           color: '#4D4D4D',
           marginBottom: '24px'
         }}>
-          Start using our duplicate image checker tool now — it's free and works entirely in your browser.
+          Start using our duplicate image checker tool now &mdash; it&apos;s free and works entirely in your browser.
         </p>
         <Link href="/" style={{
           display: 'inline-block',
