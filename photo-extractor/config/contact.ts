@@ -3,8 +3,8 @@
 
 export const contactConfig = {
   // Email addresses
-  supportEmail: 'support@photoanalyzer.pro', // Replace with your actual support email
-  businessEmail: 'business@photoanalyzer.pro', // Replace with your actual business email
+  supportEmail: 'abdallah.b.b96@gmail.com', // Your email address to receive contact form submissions
+  businessEmail: 'abdallah.b.b96@gmail.com', // Your email address for business inquiries
   
   // Company information (optional)
   companyName: 'PhotoAnalyzer Pro',
@@ -36,12 +36,12 @@ export const contactConfig = {
     
     // If using Formspree
     formspree: {
-      endpoint: '', // e.g., 'https://formspree.io/f/YOUR_FORM_ID'
+      endpoint: '', // Will be set after Formspree account setup - e.g., 'https://formspree.io/f/YOUR_FORM_ID'
     },
     
     // If using custom API
     api: {
-      endpoint: '', // e.g., '/api/contact'
+      endpoint: '/api/contact', // Next.js API route to send emails
     },
   },
   

@@ -106,10 +106,10 @@ export default function Footer() {
             </Link>
           </div>
 
-          {/* Contact Email */}
+          {/* Contact Link */}
           <div>
-            <a 
-              href={`mailto:${contactConfig.supportEmail}`}
+            <Link 
+              href="/contact"
               style={{
                 color: '#008571',
                 textDecoration: 'none',
@@ -120,8 +120,8 @@ export default function Footer() {
               onMouseEnter={(e) => e.currentTarget.style.color = '#1E5050'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#008571'}
             >
-              📧 {contactConfig.supportEmail}
-            </a>
+              📧 Contact Us
+            </Link>
           </div>
 
           {/* Copyright */}

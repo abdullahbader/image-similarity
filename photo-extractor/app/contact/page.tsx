@@ -119,97 +119,45 @@ export default function ContactPage() {
           lineHeight: '1.7'
         }}>
           Have questions about PhotoAnalyzer Pro? Need support or want to discuss business opportunities? 
-          We&apos;re here to help. Fill out the form below or reach out directly.
+          We&apos;re here to help. Fill out the form below and we&apos;ll get back to you soon.
         </p>
 
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 'clamp(24px, 4vw, 32px)',
-          marginBottom: 'clamp(32px, 6vw, 48px)'
+          background: 'linear-gradient(135deg, rgba(0, 133, 113, 0.05) 0%, rgba(30, 80, 80, 0.05) 100%)',
+          padding: 'clamp(20px, 4vw, 32px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(0, 133, 113, 0.1)',
+          marginBottom: 'clamp(32px, 6vw, 48px)',
+          textAlign: 'center',
+          maxWidth: '500px',
+          margin: '0 auto clamp(32px, 6vw, 48px) auto'
         }}>
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(0, 133, 113, 0.05) 0%, rgba(30, 80, 80, 0.05) 100%)',
-            padding: 'clamp(20px, 4vw, 32px)',
-            borderRadius: '16px',
-            border: '1px solid rgba(0, 133, 113, 0.1)'
+          <h3 style={{
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.25rem)',
+            fontWeight: '600',
+            color: '#1E5050',
+            marginBottom: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px'
           }}>
-            <h3 style={{
-              fontSize: 'clamp(1.1rem, 2.5vw, 1.25rem)',
-              fontWeight: '600',
-              color: '#1E5050',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              📧 Email
-            </h3>
-            <a 
-              href={`mailto:${contactConfig.supportEmail}`}
-              style={{
-                color: '#008571',
-                fontSize: 'clamp(0.95rem, 2vw, 1rem)',
-                marginBottom: '8px',
-                textDecoration: 'none',
-                display: 'block',
-                transition: 'color 0.2s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#1E5050'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#008571'}
-            >
-              {contactConfig.supportEmail}
-            </a>
-            {contactConfig.businessEmail && contactConfig.businessEmail !== contactConfig.supportEmail && (
-              <a 
-                href={`mailto:${contactConfig.businessEmail}`}
-                style={{
-                  color: '#008571',
-                  fontSize: 'clamp(0.95rem, 2vw, 1rem)',
-                  textDecoration: 'none',
-                  display: 'block',
-                  transition: 'color 0.2s'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#1E5050'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#008571'}
-              >
-                {contactConfig.businessEmail}
-              </a>
-            )}
-          </div>
-
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(0, 133, 113, 0.05) 0%, rgba(30, 80, 80, 0.05) 100%)',
-            padding: 'clamp(20px, 4vw, 32px)',
-            borderRadius: '16px',
-            border: '1px solid rgba(0, 133, 113, 0.1)'
+            ⏱️ Response Time
+          </h3>
+          <p style={{
+            color: '#4D4D4D',
+            fontSize: 'clamp(0.95rem, 2vw, 1rem)',
+            marginBottom: '8px'
           }}>
-            <h3 style={{
-              fontSize: 'clamp(1.1rem, 2.5vw, 1.25rem)',
-              fontWeight: '600',
-              color: '#1E5050',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              ⏱️ Response Time
-            </h3>
-            <p style={{
-              color: '#4D4D4D',
-              fontSize: 'clamp(0.95rem, 2vw, 1rem)',
-              marginBottom: '8px'
-            }}>
-              We typically respond within
-            </p>
-            <p style={{
-              color: '#008571',
-              fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
-              fontWeight: '600'
-            }}>
-              {contactConfig.responseTime}
-            </p>
-          </div>
+            We typically respond within
+          </p>
+          <p style={{
+            color: '#008571',
+            fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+            fontWeight: '600'
+          }}>
+            {contactConfig.responseTime}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} style={{
