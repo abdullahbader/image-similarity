@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css'
 import type { Metadata } from 'next'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'PhotoAnalyzer Pro - Image Duplication Detection & Metadata Extraction',
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Navigation />
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
